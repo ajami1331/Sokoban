@@ -12,4 +12,4 @@ mkdir -p releases
 
 cp -r build-i686-windows/bin temp/bin-i686-windows
 
-zip -r releases/i686-windows.zip temp/bin-i686-windows
+zip -r releases/i686-windows.zip temp/bin-i686-windows/*
