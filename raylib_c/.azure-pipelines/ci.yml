@@ -104,6 +104,16 @@ jobs:
         failure:
           steps:
           - script: echo Restore from backup! This is on failure
+          - task: DockerCompose@0
+            inputs:
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
+              azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
+              dockerComposeFile: '~/game.aljami.me/raylib_c/docker-compose.yml'
+              qualifyImageNames: false
+              projectName: 
+              action: 'Run services'
+              buildImages: false
         success:
           steps:
           - script: |
