@@ -9,6 +9,8 @@ COPY src src
 COPY scripts scripts
 COPY CMakeLists.txt CMakeLists.txt
 
+RUN chmod +x ./scripts/*
+
 RUN ./scripts/build-web.sh .
 
 RUN ls cmake-build-empscripten

@@ -4,6 +4,10 @@ project(sokoban VERSION 0.1.0 LANGUAGES C)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Dependencies
 set(RAYLIB_VERSION 4.2.0)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
@@ -46,13 +50,14 @@ if (${PLATFORM} STREQUAL "Web")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY --preload-file ${CMAKE_SOURCE_DIR}/assets@/assets/ --shell-file ${CMAKE_SOURCE_DIR}/src/shell.html")
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
-    if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-        target_compile_options(${PROJECT_NAME} PRIVATE -O3)
-    endif()
 else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror
   )
   # -fsanitize=address -fno-omit-frame-pointer)
+endif()
+
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+  target_compile_options(${PROJECT_NAME} PRIVATE -O3)
 endif()
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)

@@ -1,0 +1,19 @@
+FROM ubuntu:22.04 as builder
+
+WORKDIR /app
+
+COPY restore restore
+
+RUN ./restore/prepare-ubuntu.sh
+
+COPY scripts scripts
+COPY src src
+COPY cmake cmake
+COPY assets assets
+COPY CMakeLists.txt CMakeLists.txt
+
+RUN chmod +x ./scripts/*
+
+RUN ./scripts/build-x86_64-w64-mingw32-windows.sh .
+
+RUN ./scripts/build-i686-w64-mingw32-windows.sh .
