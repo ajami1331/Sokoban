@@ -82,6 +82,7 @@ jobs:
       title: 'Raylib C'
       assets: '$(Build.ArtifactStagingDirectory)/releases/*'
       isDraft: true
+      addChangeLog: false
       changeLogCompareToRelease: 'lastFullRelease'
       changeLogType: 'commitBased'
 
