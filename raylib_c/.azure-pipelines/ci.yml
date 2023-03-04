@@ -43,7 +43,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
+        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
         ls $(Build.ArtifactStagingDirectory)
 
   - task: DockerCompose@0
