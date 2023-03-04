@@ -66,6 +66,9 @@ jobs:
   - upload: $(Build.ArtifactStagingDirectory)/raylib_c
     artifact: raylib_c
 
+  - upload: $(Build.ArtifactStagingDirectory)/releases
+    artifact: releases
+
 - deployment: VMDeploy
   dependsOn: Build
   displayName: web
