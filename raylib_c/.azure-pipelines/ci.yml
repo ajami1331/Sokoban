@@ -70,14 +70,16 @@ jobs:
 
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
-  
+
   - task: GitHubRelease@1
     inputs:
       gitHubConnection: 'GitHub - CLown1331'
       repositoryName: '$(Build.Repository.Name)'
       action: 'create'
       target: '$(Build.SourceVersion)'
-      tagSource: 'gitTag'
+      tagSource: 'userSpecifiedTag'
+      tag: '$(Build.SourceVersion)'
+      title: 'Raylib C'
       assets: '$(Build.ArtifactStagingDirectory)/releases/*'
       isDraft: true
       changeLogCompareToRelease: 'lastFullRelease'
