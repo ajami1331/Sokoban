@@ -7,16 +7,16 @@ pool:
 jobs:
 - job: Build
   steps:
-  - task: Docker@2
-    displayName: "Build docker for web"
-    inputs:
-      containerRegistry: 'ajami1331.azurecr.io'
-      repository: 'game.aljami.me-sokoban-raylib-c'
-      command: 'buildAndPush'
-      Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
-      tags: |
-        $(Build.BuildId)
-        latest
+  # - task: Docker@2
+  #   displayName: "Build docker for web"
+  #   inputs:
+  #     containerRegistry: 'ajami1331.azurecr.io'
+  #     repository: 'game.aljami.me-sokoban-raylib-c'
+  #     command: 'buildAndPush'
+  #     Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
+  #     tags: |
+  #       $(Build.BuildId)
+  #       latest
 
   - task: Docker@2
     displayName: "Build docker for crosscompile"
@@ -36,10 +36,15 @@ jobs:
       script: |
         ls $(System.DefaultWorkingDirectory)
         ls $(Build.StagingDirectory)
-        mkdir -p $(Build.StagingDirectory)/raylib_c/
-        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh game.aljami.me-sokoban-crosscompile $(Build.StagingDirectory)/
-        ls $(Build.StagingDirectory)/
-        ls $(Build.StagingDirectory)/releases/
+        mkdir -p $(Build.StagingDirectory)/raylib_c/      
+  
+  - task: Bash@3
+    displayName: "Get binary from docker container"
+    inputs:
+      targetType: 'inline'
+      script: |
+        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
+        ls $(Build.ArtifactStagingDirectory)
 
   - task: DockerCompose@0
     inputs:
