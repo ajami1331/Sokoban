@@ -70,6 +70,18 @@ jobs:
 
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
+  
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'GitHub - CLown1331'
+      repositoryName: '$(Build.Repository.Name)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      assets: '$(Build.ArtifactStagingDirectory)/releases/*'
+      isDraft: true
+      changeLogCompareToRelease: 'lastFullRelease'
+      changeLogType: 'commitBased'
 
 - deployment: VMDeploy
   dependsOn: Build
