@@ -19,10 +19,10 @@ FROM busybox:latest
 
 WORKDIR /root
 
-COPY --from=builder /project/cmake-build-empscripten/sokoban.data dist/sokoban.data
-COPY --from=builder /project/cmake-build-empscripten/sokoban.html dist/index.html
-COPY --from=builder /project/cmake-build-empscripten/sokoban.js dist/sokoban.js
-COPY --from=builder /project/cmake-build-empscripten/sokoban.wasm dist/sokoban.wasm
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.data dist/sokoban.data
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html dist/index.html
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js dist/sokoban.js
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm dist/sokoban.wasm
 
 RUN ls dist
 

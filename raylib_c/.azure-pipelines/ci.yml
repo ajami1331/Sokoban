@@ -7,16 +7,16 @@ pool:
 jobs:
 - job: Build
   steps:
-  # - task: Docker@2
-  #   displayName: "Build docker for web"
-  #   inputs:
-  #     containerRegistry: 'ajami1331.azurecr.io'
-  #     repository: 'game.aljami.me-sokoban-raylib-c'
-  #     command: 'buildAndPush'
-  #     Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
-  #     tags: |
-  #       $(Build.BuildId)
-  #       latest
+  - task: Docker@2
+    displayName: "Build docker for web"
+    inputs:
+      containerRegistry: 'ajami1331.azurecr.io'
+      repository: 'game.aljami.me-sokoban-raylib-c'
+      command: 'buildAndPush'
+      Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
+      tags: |
+        $(Build.BuildId)
+        latest
 
   - task: Docker@2
     displayName: "Build docker for crosscompile"
