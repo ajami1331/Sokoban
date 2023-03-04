@@ -12,4 +12,6 @@ mkdir -p releases
 
 cp -r build-x86_64-windows/bin temp/bin-x86_64-windows
 
-zip -r releases/x86_64-windows.zip temp/bin-x86_64-windows/*
+cd temp
+
+zip -r ../releases/x86_64-windows.zip ./bin-x86_64-windows/
