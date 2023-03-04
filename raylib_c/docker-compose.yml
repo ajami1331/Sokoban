@@ -1,0 +1,12 @@
+version: "3.6"
+services:
+  araf.aljami.me:
+    image: 'ajami1331.azurecr.io/game.aljami.me-sokoban-raylib-c:latest'
+    ports:
+      - '3003:3000'
+    networks:
+      - game.aljami.me
+networks:
+  # Declare our private network.  We must declare one for the magic
+  # Docker DNS to work, but otherwise its default settings are fine.
+  game.aljami.me: {}

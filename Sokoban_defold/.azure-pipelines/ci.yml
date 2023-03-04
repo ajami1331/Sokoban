@@ -1,0 +1,113 @@
+trigger: none
+pr: none
+
+pool:
+  default
+
+jobs:
+- job: Build
+  steps:
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'ajami1331.azurecr.io'
+      repository: 'game.aljami.me-sokoban-defold'
+      command: 'buildAndPush'
+      Dockerfile: '$(System.DefaultWorkingDirectory)/Sokoban_defold/Dockerfile'
+      tags: |
+        $(Build.BuildId)
+        latest
+
+  - task: Bash@3 
+    displayName: "Creating build staging directory structure"
+    inputs:
+      targetType: 'inline'
+      script: |
+        ls $(System.DefaultWorkingDirectory)
+        ls $(Build.StagingDirectory)
+        mkdir -p $(Build.StagingDirectory)/Sokoban_defold/
+
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
+      azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
+      dockerComposeFile: '$(System.DefaultWorkingDirectory)/Sokoban_defold/docker-compose.yml'
+      projectName: 
+      action: 'Lock services'
+      outputDockerComposeFile: '$(Build.StagingDirectory)/Sokoban_defold/docker-compose.yml'
+  
+  - task: CopyFiles@2
+    displayName: 'Copy Files to artifact staging directory'
+    inputs:
+      SourceFolder: '$(Build.StagingDirectory)/Sokoban_defold'
+      Contents: 'docker-compose.yml'
+      TargetFolder: $(Build.ArtifactStagingDirectory)/Sokoban_defold
+
+  - upload: $(Build.ArtifactStagingDirectory)/Sokoban_defold
+    artifact: Sokoban_defold
+
+- deployment: VMDeploy
+  dependsOn: Build
+  displayName: web
+  environment:
+    name: prod
+    resourceType: VirtualMachine
+    tags: web
+  strategy:
+    rolling:
+      maxParallel: 100%
+      preDeploy:
+        steps:
+          - download: current
+            artifact: Sokoban_defold
+          - script: echo downloaded built artifact
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'ajami1331.azurecr.io'
+              command: 'login'
+          
+          - task: DockerCompose@0
+            inputs:
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
+              azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
+              dockerComposeFile: '$(Pipeline.Workspace)/Sokoban_defold/docker-compose.yml'
+              qualifyImageNames: false
+              projectName: 
+              action: 'Run a Docker Compose command'
+              dockerComposeCommand: 'down'
+              buildImages: false
+      deploy:
+        steps:
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'ajami1331.azurecr.io'
+              command: 'login'
+          
+          - task: DockerCompose@0
+            inputs:
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
+              azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
+              dockerComposeFile: '$(Pipeline.Workspace)/Sokoban_defold/docker-compose.yml'
+              qualifyImageNames: false
+              projectName: 
+              action: 'Run services'
+              buildImages: false
+      routeTraffic:
+          steps:
+          - script: echo routing traffic
+      postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+      on:
+        failure:
+          steps:
+          - script: echo Restore from backup! This is on failure
+        success:
+          steps:
+          - script: |
+              echo Notify! This is on success
+              rm -rf ~/game.aljami.me/Sokoban_defold
+              cp -r $(Pipeline.Workspace)/Sokoban_defold ~/game.aljami.me/Sokoban_defold
+              sudo service nginx restart
