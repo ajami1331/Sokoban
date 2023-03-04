@@ -78,7 +78,7 @@ jobs:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: '$(Build.SourceVersion)'
+      tag: '$(Build.BuildNumber)'
       title: 'Sokoban: Raylib C'
       assets: '$(Build.ArtifactStagingDirectory)/releases/*'
       isDraft: true
