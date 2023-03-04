@@ -35,7 +35,10 @@ jobs:
         ls $(System.DefaultWorkingDirectory)
         ls $(Build.StagingDirectory)
         mkdir -p $(Build.StagingDirectory)/raylib_c/
-
+        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh game.aljami.me-sokoban-crosscompile $(Build.StagingDirectory)/
+        ls $(Build.StagingDirectory)/
+        ls $(Build.StagingDirectory)/releases/
+        
   - task: DockerCompose@0
     inputs:
       containerregistrytype: 'Azure Container Registry'
