@@ -45,6 +45,8 @@ jobs:
       script: |
         $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
         ls $(Build.ArtifactStagingDirectory)
+        mv $(Build.ArtifactStagingDirectory)/x86_64-windows.zip $(Build.ArtifactStagingDirectory)/raylib-x86_64-windows.zip 
+        mv $(Build.ArtifactStagingDirectory)/i686-windows.zip $(Build.ArtifactStagingDirectory)/raylib-i686-windows.zip 
 
   - task: DockerCompose@0
     inputs:
