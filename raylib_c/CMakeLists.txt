@@ -57,7 +57,7 @@ else()
 endif()
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -static")
+  target_compile_options(${PROJECT_NAME} PRIVATE -O3 --static)
 endif()
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)
