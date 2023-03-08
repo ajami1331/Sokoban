@@ -70,7 +70,6 @@ jobs:
 
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
-
   - task: GitHubRelease@1
     inputs:
       gitHubConnection: 'GitHub - CLown1331'
