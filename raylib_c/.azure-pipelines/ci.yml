@@ -71,20 +71,20 @@ jobs:
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
   
-  # - task: GitHubRelease@1
-  #   inputs:
-  #     gitHubConnection: 'GitHub - CLown1331'
-  #     repositoryName: '$(Build.Repository.Name)'
-  #     action: 'create'
-  #     target: '$(Build.SourceVersion)'
-  #     tagSource: 'userSpecifiedTag'
-  #     tag: '$(Build.BuildNumber)'
-  #     title: 'Sokoban: Raylib C'
-  #     assets: '$(Build.ArtifactStagingDirectory)/releases/*'
-  #     isDraft: true
-  #     addChangeLog: false
-  #     changeLogCompareToRelease: 'lastFullRelease'
-  #     changeLogType: 'commitBased'
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'GitHub Release: Sokoban'
+      repositoryName: '$(Build.Repository.Name)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'userSpecifiedTag'
+      tag: '$(Build.BuildNumber)'
+      title: 'Sokoban: Raylib C'
+      assets: '$(Build.ArtifactStagingDirectory)/releases/*'
+      isDraft: true
+      addChangeLog: false
+      changeLogCompareToRelease: 'lastFullRelease'
+      changeLogType: 'commitBased'
 
 - deployment: VMDeploy
   dependsOn: Build
