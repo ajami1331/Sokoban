@@ -2,15 +2,11 @@
 #include "raylib.h"
 #include "tomlc99/toml.h"
 #include <errno.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #define CONFIG_FILE "./assets/config.toml"
-
-pthread_mutex_t config_lock = PTHREAD_MUTEX_INITIALIZER;
 
 void config_free(void);
 void config_parse_window_table(config *instance, toml_table_t *conf);
@@ -24,8 +20,6 @@ config *config_load(void)
     {
         return instance;
     }
-
-    pthread_mutex_lock(&config_lock);
 
     instance = malloc(sizeof(config));
 
@@ -65,7 +59,6 @@ config *config_load(void)
 
     TraceLog(LOG_INFO, "config loaded");
 
-    pthread_mutex_unlock(&config_lock);
 
     return instance;
 }
