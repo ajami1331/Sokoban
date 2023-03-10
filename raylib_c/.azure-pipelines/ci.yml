@@ -70,10 +70,10 @@ jobs:
 
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
-
+  
   - task: GitHubRelease@1
     inputs:
-      gitHubConnection: 'GitHub - CLown1331'
+      gitHubConnection: 'GitHub Release: Sokoban'
       repositoryName: '$(Build.Repository.Name)'
       action: 'create'
       target: '$(Build.SourceVersion)'
