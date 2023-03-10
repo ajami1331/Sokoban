@@ -2,3 +2,5 @@ build
 cmake-build-debug
 cmake-build-empscripten
 releases
+out
+.vs

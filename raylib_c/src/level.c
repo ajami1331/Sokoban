@@ -3,13 +3,10 @@
 #include "raylib.h"
 #include "utils.h"
 #include <errno.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
-pthread_mutex_t level_lock = PTHREAD_MUTEX_INITIALIZER;
 
 int LEVELS_LOADED = 0;
 
@@ -36,8 +33,6 @@ level *level_load_all(void)
     {
         return levels;
     }
-
-    pthread_mutex_lock(&level_lock);
 
     TraceLog(LOG_INFO, "loading levels from %s", config_load()->levels_file);
 
@@ -89,7 +84,6 @@ level *level_load_all(void)
 
     TraceLog(LOG_INFO, "loaded %d levels", LEVELS_LOADED);
 
-    pthread_mutex_unlock(&level_lock);
     return levels;
 }
 

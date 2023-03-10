@@ -51,9 +51,11 @@ if (${PLATFORM} STREQUAL "Web")
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
 else()
+  if (NOT MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror
   )
   # -fsanitize=address -fno-omit-frame-pointer)
+  endif()
 endif()
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
