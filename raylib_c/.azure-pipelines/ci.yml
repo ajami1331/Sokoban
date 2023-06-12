@@ -38,15 +38,15 @@ jobs:
         ls $(Build.StagingDirectory)
         mkdir -p $(Build.StagingDirectory)/raylib_c/      
   
-  - task: Bash@3
-    displayName: "Get binary from docker container"
-    inputs:
-      targetType: 'inline'
-      script: |
-        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
-        ls $(Build.ArtifactStagingDirectory)/releases/
-        mv $(Build.ArtifactStagingDirectory)/releases/x86_64-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-x86_64-windows.zip 
-        mv $(Build.ArtifactStagingDirectory)/releases/i686-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-i686-windows.zip 
+#   - task: Bash@3
+#     displayName: "Get binary from docker container"
+#     inputs:
+#       targetType: 'inline'
+#       script: |
+#         $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
+#         ls $(Build.ArtifactStagingDirectory)/releases/
+#         mv $(Build.ArtifactStagingDirectory)/releases/x86_64-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-x86_64-windows.zip 
+#         mv $(Build.ArtifactStagingDirectory)/releases/i686-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-i686-windows.zip 
 
   - task: DockerCompose@0
     inputs:
@@ -68,8 +68,8 @@ jobs:
   - upload: $(Build.ArtifactStagingDirectory)/raylib_c
     artifact: raylib_c
 
-  - upload: $(Build.ArtifactStagingDirectory)/releases
-    artifact: releases
+#   - upload: $(Build.ArtifactStagingDirectory)/releases
+#     artifact: releases
   
   # - task: GitHubRelease@1
   #   inputs:
