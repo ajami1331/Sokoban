@@ -18,16 +18,16 @@ jobs:
         $(Build.BuildId)
         latest
 
-  - task: Docker@2
-    displayName: "Build docker for crosscompile"
-    inputs:
-      containerRegistry: 'ajami1331.azurecr.io'
-      repository: 'game.aljami.me-sokoban-crosscompile'
-      command: 'build'
-      Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile.CrossCompile'
-      tags: |
-        $(Build.BuildId)
-        latest
+#   - task: Docker@2
+#     displayName: "Build docker for crosscompile"
+#     inputs:
+#       containerRegistry: 'ajami1331.azurecr.io'
+#       repository: 'game.aljami.me-sokoban-crosscompile'
+#       command: 'build'
+#       Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile.CrossCompile'
+#       tags: |
+#         $(Build.BuildId)
+#         latest
 
   - task: Bash@3 
     displayName: "Creating build staging directory structure"
