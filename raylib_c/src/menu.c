@@ -4,7 +4,11 @@
 #include "raylib.h"
 #include <stdlib.h>
 
-#define MAIN_MENU_ITEMS_COUNT 4
+#if defined(PLATFORM_WEB)
+    #define MAIN_MENU_ITEMS_COUNT 3
+#else
+    #define MAIN_MENU_ITEMS_COUNT 4
+#endif
 
 char *main_menu_items[MAIN_MENU_ITEMS_COUNT] = {
     "New Game",
