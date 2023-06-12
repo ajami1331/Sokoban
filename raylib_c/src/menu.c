@@ -19,6 +19,7 @@ char *main_menu_items[MAIN_MENU_ITEMS_COUNT] = {
 
 enum menu_state menu = MENU_STATE_MENU;
 int current_menu_item = 0;
+int current_level_number = 0;
 
 void process_main_menu(void);
 void draw_main_menu(void);
@@ -161,7 +162,33 @@ void process_level_select(void)
 void draw_level_select(void)
 {    
     int width = config_load()->screen_width;
-    
+
+    int tile_size = 64;
+    int tile_size_with_padding = tile_size + 8 + 8;
+    int per_row = width / tile_size_with_padding;
+    int y_offset = 180;
+    int max_levels = config_load()->max_levels;
+
+    if (current_level_number >= 50) 
+    {
+        y_offset -= ((current_level_number - 50) / 10 + 1) * tile_size_with_padding;
+    }
+
+    for (int i = 0; i < max_levels; i++)
+    {
+        int x = (i % per_row) * tile_size_with_padding;
+        int y = (i / per_row) * tile_size_with_padding;
+        DrawRectangle(8 + x, y_offset + y, tile_size, tile_size, WHITE);
+        if (current_level_number == i)
+        {
+            TraceLog(LOG_INFO, "x: %i, y: %i", x, y);
+            DrawText(TextFormat("%i", i + 1), 8 + x + 8, y_offset + y + 8, 48, ORANGE);
+            continue;
+        }
+
+        DrawText(TextFormat("%i", i + 1), 8 + x + 8, y_offset + y + 8, 48, BLACK);
+    }
+
     DrawText("Level Select", width / 3.5, 50, 36, GRAY);
     DrawText("Press ESC to go back", width / 3.5, 100, 36, GRAY);
 }
@@ -171,5 +198,51 @@ void check_input_in_level_select(void)
     if (IsKeyPressed(KEY_ESCAPE))
     {
         menu = MENU_STATE_MENU;
+    }
+
+    int max_levels = config_load()->max_levels;
+
+    if (IsKeyPressed(KEY_UP))
+    {
+        if (current_level_number - 10 > 0)
+        {
+            current_level_number -= 10;
+        }
+        return;
+    }
+
+    if (IsKeyPressed(KEY_DOWN))
+    {
+        if (current_level_number + 10 < max_levels)
+        {
+            current_level_number += 10;
+        }
+        return;
+    }
+
+    if (IsKeyPressed(KEY_LEFT))
+    {
+        if (current_level_number - 1 > 0)
+        {
+            current_level_number--;
+        }
+        return;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT))
+    {
+        if (current_level_number + 1 < max_levels)
+        {
+            current_level_number++;
+        }
+        return;
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        menu_reset_state();
+        game_get_instance()->state = GAME_STATE_PLAYING;
+        game_get_instance()->current_level_number = current_level_number;
+        game_restart_current_level();
     }
 }

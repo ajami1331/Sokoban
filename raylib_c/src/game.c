@@ -25,7 +25,6 @@ void game_draw_level_complete_message(void);
 void game_check_input_for_level_complete(void);
 void game_draw_pause_menu(void);
 void game_check_input_for_pause_menu(void);
-void game_restart_current_level(void);
 
 int current_pause_menu_item = 0;
 

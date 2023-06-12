@@ -24,5 +24,6 @@ typedef struct {
 game *game_get_instance(void);
 void game_init(void);
 void game_loop(void);
+void game_restart_current_level(void);
 
 #endif
