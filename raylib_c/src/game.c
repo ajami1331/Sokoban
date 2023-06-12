@@ -35,6 +35,8 @@ void game_init(void)
 
     SetTargetFPS(60);
 
+    SetExitKey(0);
+
     tile_sheet = LoadTexture("assets/sokoban_tilesheet.png");
 
     atexit(game_cleanup);
@@ -245,7 +247,12 @@ void game_update_current_level(void)
     int prev_player_x = g->player_x;
     int prev_player_y = g->player_y;
 
-    if (IsKeyPressed(KEY_R))
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        g->state = GAME_STATE_MENU;
+        return;
+    }
+    else if (IsKeyPressed(KEY_R))
     {
         game_load_current_level();
         TraceLog(LOG_INFO, "reloading level %d", g->current_level_number);
