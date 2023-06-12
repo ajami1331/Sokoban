@@ -47,7 +47,7 @@ endif()
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
     # Tell Emscripten to build an example.html file.
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY --preload-file ${CMAKE_SOURCE_DIR}/assets@/assets/ --shell-file ${CMAKE_SOURCE_DIR}/src/shell.html")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY --preload-file ${CMAKE_SOURCE_DIR}/assets@/assets/ --shell-file ${CMAKE_SOURCE_DIR}/src/minshell.html")
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
 else()
