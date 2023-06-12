@@ -21,8 +21,8 @@ typedef struct {
     char *level_text;
 } game;
 
+game *game_get_instance(void);
 void game_init(void);
-
 void game_loop(void);
 
 #endif

@@ -1,5 +1,6 @@
 #include "game.h"
 #include "config.h"
+#include "menu.h"
 #include "level.h"
 #include "raylib.h"
 #include "utils.h"
@@ -13,7 +14,6 @@
 
 void game_cleanup(void);
 void game_update_draw_frame(void);
-game *game_get_instance(void);
 void game_draw_current_level(void);
 void game_load_current_level(void);
 void game_update_current_level(void);
@@ -39,7 +39,7 @@ void game_init(void)
 
     atexit(game_cleanup);
 
-    game_get_instance()->state = GAME_STATE_PLAYING;
+    game_get_instance()->state = GAME_STATE_MENU;
     game_get_instance()->current_level_number = 0;
     game_get_instance()->current_level = NULL;
     game_load_current_level();
@@ -194,6 +194,9 @@ void game_update_draw_frame(void)
 
     switch (game_get_instance()->state)
     {
+    case GAME_STATE_MENU:
+        menu_process_main_menu();
+        break;
     case GAME_STATE_PLAYING:
         game_update_current_level();
         game_draw_current_level();

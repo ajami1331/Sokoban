@@ -28,6 +28,9 @@
         "complex": "c",
         "random": "c",
         "*.m": "c",
-        "utils.h": "c"
+        "utils.h": "c",
+        "config.h": "c",
+        "raylib.h": "c",
+        "ios": "c"
     }
 }
