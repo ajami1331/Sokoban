@@ -18,17 +18,6 @@ jobs:
         $(Build.BuildId)
         latest
 
-#   - task: Docker@2
-#     displayName: "Build docker for crosscompile"
-#     inputs:
-#       containerRegistry: 'ajami1331.azurecr.io'
-#       repository: 'game.aljami.me-sokoban-crosscompile'
-#       command: 'build'
-#       Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile.CrossCompile'
-#       tags: |
-#         $(Build.BuildId)
-#         latest
-
   - task: Bash@3 
     displayName: "Creating build staging directory structure"
     inputs:
@@ -36,17 +25,7 @@ jobs:
       script: |
         ls $(System.DefaultWorkingDirectory)
         ls $(Build.StagingDirectory)
-        mkdir -p $(Build.StagingDirectory)/raylib_c/      
-  
-#   - task: Bash@3
-#     displayName: "Get binary from docker container"
-#     inputs:
-#       targetType: 'inline'
-#       script: |
-#         $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-crosscompile $(Build.ArtifactStagingDirectory)/
-#         ls $(Build.ArtifactStagingDirectory)/releases/
-#         mv $(Build.ArtifactStagingDirectory)/releases/x86_64-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-x86_64-windows.zip 
-#         mv $(Build.ArtifactStagingDirectory)/releases/i686-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-i686-windows.zip 
+        mkdir -p $(Build.StagingDirectory)/raylib_c/
 
   - task: DockerCompose@0
     inputs:
@@ -67,21 +46,3 @@ jobs:
 
   - upload: $(Build.ArtifactStagingDirectory)/raylib_c
     artifact: raylib_c
-
-#   - upload: $(Build.ArtifactStagingDirectory)/releases
-#     artifact: releases
-  
-  # - task: GitHubRelease@1
-  #   inputs:
-  #     gitHubConnection: 'GitHub Release: Sokoban'
-  #     repositoryName: '$(Build.Repository.Name)'
-  #     action: 'create'
-  #     target: '$(Build.SourceVersion)'
-  #     tagSource: 'userSpecifiedTag'
-  #     tag: '$(Build.BuildNumber)'
-  #     title: 'Sokoban: Raylib C'
-  #     assets: '$(Build.ArtifactStagingDirectory)/releases/*'
-  #     isDraft: true
-  #     addChangeLog: false
-  #     changeLogCompareToRelease: 'lastFullRelease'
-  #     changeLogType: 'commitBased'
