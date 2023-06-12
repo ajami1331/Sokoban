@@ -10,6 +10,9 @@
 
 #if defined(PLATFORM_WEB)
 #include <emscripten.h>
+#define PAUSE_MENU_ITEMS_COUNT 3
+#else
+#define PAUSE_MENU_ITEMS_COUNT 4
 #endif
 
 void game_cleanup(void);
@@ -20,6 +23,18 @@ void game_update_current_level(void);
 void game_check_for_level_complete(void);
 void game_draw_level_complete_message(void);
 void game_check_input_for_level_complete(void);
+void game_draw_pause_menu(void);
+void game_check_input_for_pause_menu(void);
+void game_restart_current_level(void);
+
+int current_pause_menu_item = 0;
+
+char *pause_menu_items[PAUSE_MENU_ITEMS_COUNT] = {
+    "Resume",
+    "Restart",
+    "Exit to main menu",
+    "Exit to desktop",
+};
 
 Texture2D tile_sheet;
 
@@ -209,6 +224,11 @@ void game_update_draw_frame(void)
         game_draw_level_complete_message();
         game_check_input_for_level_complete();
         break;
+    case GAME_STATE_PAUSED:
+        game_draw_current_level();
+        game_draw_pause_menu();
+        game_check_input_for_pause_menu();
+        break;
     default:
         break;
     }
@@ -249,13 +269,12 @@ void game_update_current_level(void)
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        g->state = GAME_STATE_MENU;
+        g->state = GAME_STATE_PAUSED;
         return;
     }
     else if (IsKeyPressed(KEY_R))
     {
-        game_load_current_level();
-        TraceLog(LOG_INFO, "reloading level %d", g->current_level_number);
+        game_restart_current_level();
         return;
     }
 
@@ -402,4 +421,94 @@ void game_check_input_for_level_complete(void)
         game_load_current_level();
         g->state = GAME_STATE_PLAYING;
     }
+}
+
+void game_draw_pause_menu(void)
+{
+    int width = config_load()->screen_width;
+
+    ClearBackground(SKYBLUE);
+
+    DrawText("Sokoban", width / 3.5, 150, 76, WHITE);
+
+    for (int i = 0; i < PAUSE_MENU_ITEMS_COUNT; i++)
+    {
+        if (i == current_pause_menu_item)
+        {
+            DrawText(pause_menu_items[i], width / 2.5, 250 + (i * 50), 48, ORANGE);
+            continue;
+        }
+        DrawText(pause_menu_items[i], width / 2.5, 250 + (i * 50), 48, WHITE);
+    }
+}
+
+void game_check_input_for_pause_menu(void)
+{
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        game *g = game_get_instance();
+        g->state = GAME_STATE_PLAYING;
+    }
+
+    if (IsKeyPressed(KEY_UP))
+    {
+        if (current_pause_menu_item == 0)
+        {
+            current_pause_menu_item = PAUSE_MENU_ITEMS_COUNT - 1;
+            return;
+        }
+        current_pause_menu_item--;
+        return;
+    }
+
+    if (IsKeyPressed(KEY_DOWN))
+    {
+        if (current_pause_menu_item == PAUSE_MENU_ITEMS_COUNT - 1)
+        {
+            current_pause_menu_item = 0;
+            return;
+        }
+        current_pause_menu_item++;
+        return;
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        switch (current_pause_menu_item)
+        {
+        case 0:
+        {
+            game_get_instance()->state = GAME_STATE_PLAYING;
+            current_pause_menu_item = 0;
+            break;
+        }
+        case 1:
+        {
+            game_restart_current_level();
+            game_get_instance()->state = GAME_STATE_PLAYING;
+            current_pause_menu_item = 0;
+            break;
+        }
+        case 2:
+        {
+            game_get_instance()->state = GAME_STATE_MENU;
+            current_pause_menu_item = 0;
+            break;
+        }
+        case 3:
+        {
+            exit(0);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+}
+
+void game_restart_current_level(void)
+{
+    game_load_current_level();
+    TraceLog(LOG_INFO, "reloading level %d", game_get_instance()->current_level_number);
 }

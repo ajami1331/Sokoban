@@ -75,7 +75,7 @@ void draw_main_menu(void)
     {
         if (i == current_menu_item)
         {
-            DrawText(main_menu_items[i], width / 2.5, 250 + (i * 50), 48, RED);
+            DrawText(main_menu_items[i], width / 2.5, 250 + (i * 50), 48, ORANGE);
             continue;
         }
         DrawText(main_menu_items[i], width / 2.5, 250 + (i * 50), 48, WHITE);
