@@ -122,38 +122,43 @@ void game_draw_current_level(void)
 
     level *l = g->current_level;
 
+    int y_Offset = (config_load()->screen_height - (l->height * 64) / 2) / 64;
+    int x_Offset = (config_load()->screen_width - (l->width * 64) / 2)/ 64;
+
     for (int i = 0; i < l->height; i++)
     {
         for (int j = 0; j < l->width; j++)
         {
+            int drax_x = j + x_Offset;
+            int draw_y = i + y_Offset;
             switch (l->data[i][j])
             {
             case '#':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(6, 6), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(6, 6), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             case '$':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 0), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 0), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             case '*':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 1), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 1), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             case '.':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             case '@':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             case '+':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(j, i), (Vector2){0, 0}, 0,
+                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
                                  .5, WHITE);
                 break;
             default:
@@ -360,13 +365,13 @@ void game_check_for_level_complete(void)
 
 void game_draw_level_complete_message(void)
 {
-    DrawText("Level Complete", 20, 240, 55, BLACK);
-    DrawText("Press n to go to next level", 20, 350, 45, BLACK);
-    DrawText("Press p to go to previous level", 20, 450, 45, BLACK);
-    DrawText("Press r to restart current one", 20, 550, 45, BLACK);
+    DrawText("Level Complete", 20, 240, 55, WHITE);
+    DrawText("Press n to go to next level", 20, 350, 45, WHITE);
+    DrawText("Press p to go to previous level", 20, 450, 45, WHITE);
+    DrawText("Press r to restart current one", 20, 550, 45, WHITE);
 }
 
-void game_check_input_for_level_complete()
+void game_check_input_for_level_complete(void)
 {
     game *g = game_get_instance();
 

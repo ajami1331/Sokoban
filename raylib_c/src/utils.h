@@ -4,12 +4,12 @@
 #define utils_get_tile_rect(x, y)                                                                                      \
     (Rectangle)                                                                                                        \
     {                                                                                                                  \
-        x * 64, y * 64, 64, 64                                                                                         \
+        (x) * 64, (y) * 64, 64, 64                                                                                         \
     }
 #define utils_get_draw_rect(x, y)                                                                                      \
     (Rectangle)                                                                                                        \
     {                                                                                                                  \
-        x * 32, y * 32, 32, 32                                                                                         \
+        (x) * 32, (y) * 32, 32, 32                                                                                         \
     }
 
 #define utils_max(a, b)                                                                                                \
