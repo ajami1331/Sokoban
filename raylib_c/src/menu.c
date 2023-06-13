@@ -204,7 +204,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_UP))
     {
-        if (current_level_number - 10 > 0)
+        if (current_level_number - 10 >= 0)
         {
             current_level_number -= 10;
         }
@@ -222,7 +222,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_LEFT))
     {
-        if (current_level_number - 1 > 0)
+        if (current_level_number - 1 >= 0)
         {
             current_level_number--;
         }
