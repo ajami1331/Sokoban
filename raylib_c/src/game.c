@@ -1,4 +1,5 @@
 #include "game.h"
+#include "draw.h"
 #include "config.h"
 #include "menu.h"
 #include "level.h"
@@ -35,8 +36,6 @@ char *pause_menu_items[PAUSE_MENU_ITEMS_COUNT] = {
     "Exit to desktop",
 };
 
-Texture2D tile_sheet;
-
 void game_init(void)
 {
     TraceLog(LOG_INFO, "initializing game");
@@ -51,7 +50,7 @@ void game_init(void)
 
     SetExitKey(0);
 
-    tile_sheet = LoadTexture("assets/sokoban_tilesheet.png");
+    draw_init();
 
     atexit(game_cleanup);
 
@@ -147,39 +146,7 @@ void game_draw_current_level(void)
         {
             int drax_x = j + x_Offset;
             int draw_y = i + y_Offset;
-            switch (l->data[i][j])
-            {
-            case '#':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(6, 6), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            case '$':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 0), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            case '*':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 1), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            case '.':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            case '@':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            case '+':
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                DrawTextureTiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(drax_x, draw_y), (Vector2){0, 0}, 0,
-                                 .5, WHITE);
-                break;
-            default:
-                break;
-            }
+            draw_tile(l->data[i][j], drax_x, draw_y);
         }
     }
 }
@@ -252,7 +219,7 @@ void game_cleanup(void)
 
     free(g);
 
-    UnloadTexture(tile_sheet);
+    draw_free();
 
     CloseWindow();
 

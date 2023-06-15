@@ -31,6 +31,8 @@
         "utils.h": "c",
         "config.h": "c",
         "raylib.h": "c",
-        "ios": "c"
+        "ios": "c",
+        "draw.h": "c",
+        "array": "c"
     }
 }
