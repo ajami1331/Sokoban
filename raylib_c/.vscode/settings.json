@@ -33,6 +33,7 @@
         "raylib.h": "c",
         "ios": "c",
         "draw.h": "c",
-        "array": "c"
+        "array": "c",
+        "tile.h": "c"
     }
 }

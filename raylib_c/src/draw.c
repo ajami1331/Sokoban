@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "utils.h"
+#include "tile.h"
 
 Texture2D tile_sheet;
 
@@ -17,29 +18,29 @@ void draw_tile(char tile, int pos_x, int pos_y)
 {
     switch (tile)
     {
-        case '#':
+        case WALL:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(6, 6), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             break;
-        case '$':
+        case BOX:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(4, 0), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             break;
-        case '*':
+        case BOX_ON_GOAL:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(4, 1), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             break;
-        case '.':
+        case GOAL:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             break;
-        case '@':
+        case PLAYER:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             break;
-        case '+':
+        case PLAYER_ON_GOAL:
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(4, 3), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,
                                 .5, WHITE);
             draw_texture_tiled(tile_sheet, utils_get_tile_rect(1, 4), utils_get_draw_rect(pos_x, pos_y), (Vector2){0, 0}, 0,

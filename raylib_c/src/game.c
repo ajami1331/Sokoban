@@ -3,6 +3,7 @@
 #include "config.h"
 #include "menu.h"
 #include "level.h"
+#include "tile.h"
 #include "raylib.h"
 #include "utils.h"
 #include <stdio.h>
@@ -116,7 +117,7 @@ void game_load_current_level(void)
     {
         for (int j = 0; j < l->width; j++)
         {
-            if (l->data[i][j] == '@')
+            if (l->data[i][j] == PLAYER)
             {
                 game_get_instance()->player_x = i;
                 game_get_instance()->player_y = j;
@@ -263,7 +264,7 @@ void game_update_current_level(void)
 
     bool clear_prev = false;
 
-    if (l->data[g->player_x][g->player_y] == '#')
+    if (l->data[g->player_x][g->player_y] == WALL)
     {
         g->player_x = prev_player_x;
         g->player_y = prev_player_y;
@@ -272,18 +273,18 @@ void game_update_current_level(void)
     int dir_x = g->player_x - prev_player_x;
     int dir_y = g->player_y - prev_player_y;
 
-    if (l->data[g->player_x][g->player_y] == '$')
+    if (l->data[g->player_x][g->player_y] == BOX)
     {
-        if (l->data[g->player_x + dir_x][g->player_y + dir_y] == ' ')
+        if (l->data[g->player_x + dir_x][g->player_y + dir_y] == FLOOR)
         {
-            l->data[g->player_x + dir_x][g->player_y + dir_y] = '$';
-            l->data[g->player_x][g->player_y] = '@';
+            l->data[g->player_x + dir_x][g->player_y + dir_y] = BOX;
+            l->data[g->player_x][g->player_y] = PLAYER;
             clear_prev = true;
         }
-        else if (l->data[g->player_x + dir_x][g->player_y + dir_y] == '.')
+        else if (l->data[g->player_x + dir_x][g->player_y + dir_y] == GOAL)
         {
-            l->data[g->player_x + dir_x][g->player_y + dir_y] = '*';
-            l->data[g->player_x][g->player_y] = '@';
+            l->data[g->player_x + dir_x][g->player_y + dir_y] = BOX_ON_GOAL;
+            l->data[g->player_x][g->player_y] = PLAYER;
             clear_prev = true;
         }
         else
@@ -293,18 +294,18 @@ void game_update_current_level(void)
         }
     }
 
-    if (l->data[g->player_x][g->player_y] == '*')
+    if (l->data[g->player_x][g->player_y] == BOX_ON_GOAL)
     {
-        if (l->data[g->player_x + dir_x][g->player_y + dir_y] == ' ')
+        if (l->data[g->player_x + dir_x][g->player_y + dir_y] == FLOOR)
         {
-            l->data[g->player_x + dir_x][g->player_y + dir_y] = '$';
-            l->data[g->player_x][g->player_y] = '+';
+            l->data[g->player_x + dir_x][g->player_y + dir_y] = BOX;
+            l->data[g->player_x][g->player_y] = PLAYER_ON_GOAL;
             clear_prev = true;
         }
-        else if (l->data[g->player_x + dir_x][g->player_y + dir_y] == '.')
+        else if (l->data[g->player_x + dir_x][g->player_y + dir_y] == GOAL)
         {
-            l->data[g->player_x + dir_x][g->player_y + dir_y] = '*';
-            l->data[g->player_x][g->player_y] = '+';
+            l->data[g->player_x + dir_x][g->player_y + dir_y] = BOX_ON_GOAL;
+            l->data[g->player_x][g->player_y] = PLAYER_ON_GOAL;
             clear_prev = true;
         }
         else
@@ -314,27 +315,27 @@ void game_update_current_level(void)
         }
     }
 
-    if (l->data[g->player_x][g->player_y] == '.')
+    if (l->data[g->player_x][g->player_y] == GOAL)
     {
-        l->data[g->player_x][g->player_y] = '+';
+        l->data[g->player_x][g->player_y] = PLAYER_ON_GOAL;
         clear_prev = true;
     }
 
-    if (l->data[g->player_x][g->player_y] == ' ')
+    if (l->data[g->player_x][g->player_y] == FLOOR)
     {
-        l->data[g->player_x][g->player_y] = '@';
+        l->data[g->player_x][g->player_y] = PLAYER;
         clear_prev = true;
     }
 
     if (clear_prev)
     {
-        if (l->data[prev_player_x][prev_player_y] == '+')
+        if (l->data[prev_player_x][prev_player_y] == PLAYER_ON_GOAL)
         {
-            l->data[prev_player_x][prev_player_y] = '.';
+            l->data[prev_player_x][prev_player_y] = GOAL;
         }
         else
         {
-            l->data[prev_player_x][prev_player_y] = ' ';
+            l->data[prev_player_x][prev_player_y] = FLOOR;
         }
     }
 }
@@ -348,7 +349,7 @@ void game_check_for_level_complete(void)
     {
         for (int j = 0; j < l->width; j++)
         {
-            if (l->data[i][j] == '$')
+            if (l->data[i][j] == BOX)
             {
                 return;
             }
