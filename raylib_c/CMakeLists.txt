@@ -40,6 +40,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_definitions(LOG_LEVEL=LOG_DEBUG)
+  add_compile_definitions(DEBBUG_MODE)
 else ()
   add_compile_definitions(LOG_LEVEL=LOG_INFO)
 endif()
@@ -59,7 +60,10 @@ else()
 endif()
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -static")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+  if (NOT APPLE)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
+  endif()
 endif()
 
 # Checks if OSX and links appropriate frameworks (Only required on MacOS)

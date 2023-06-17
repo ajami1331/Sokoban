@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H 1
 
-#include "raylib.h"
+#include "common.h"
 
 typedef struct config
 {

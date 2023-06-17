@@ -1,7 +1,6 @@
 #include "menu.h"
 #include "game.h"
 #include "config.h"
-#include "raylib.h"
 #include <stdlib.h>
 
 #if defined(PLATFORM_WEB)

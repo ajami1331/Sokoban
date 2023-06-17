@@ -1,6 +1,5 @@
 #include "level.h"
 #include "config.h"
-#include "raylib.h"
 #include "utils.h"
 #include <errno.h>
 #include <stdio.h>

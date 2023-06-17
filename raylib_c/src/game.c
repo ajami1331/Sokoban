@@ -4,7 +4,6 @@
 #include "menu.h"
 #include "level.h"
 #include "tile.h"
-#include "raylib.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>

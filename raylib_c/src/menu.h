@@ -1,6 +1,8 @@
 #ifndef MENU_H
 #define MENU_H 1
 
+#include "common.h"
+
 enum menu_state {
     MENU_STATE_MENU,
     MENU_STATE_LEVEL_SELECT,

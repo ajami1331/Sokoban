@@ -1,5 +1,4 @@
 #include "config.h"
-#include "raylib.h"
 #include "tomlc99/toml.h"
 #include <errno.h>
 #include <stdio.h>

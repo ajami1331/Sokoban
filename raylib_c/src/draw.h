@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H 1
 
-#include "raylib.h"
+#include "common.h"
 
 void draw_init(void);
 void draw_free(void);

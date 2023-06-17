@@ -34,6 +34,10 @@
         "ios": "c",
         "draw.h": "c",
         "array": "c",
-        "tile.h": "c"
+        "tile.h": "c",
+        "common.h": "c",
+        "level.h": "c",
+        "stb_leakcheck.h": "c",
+        "toml.h": "c"
     }
 }

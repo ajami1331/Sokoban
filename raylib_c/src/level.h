@@ -4,6 +4,8 @@
 #define MAX_LEVEL_WIDTH 32
 #define MAX_LEVEL_HEIGHT 32
 
+#include "common.h"
+
 typedef struct level
 {
     int width;
