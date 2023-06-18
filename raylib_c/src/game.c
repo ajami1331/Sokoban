@@ -163,9 +163,15 @@ game *game_get_instance(void)
             TraceLog(LOG_ERROR, "cannot allocate memory for game");
             exit(-1);
         }
+        
+        g->level_text = (char *)malloc(32);
+        if (!g->level_text)
+        {
+            TraceLog(LOG_ERROR, "cannot allocate memory for level text");
+            exit(-1);
+        }
     }
 
-    g->level_text = (char *)malloc(32);
     return g;
 }
 

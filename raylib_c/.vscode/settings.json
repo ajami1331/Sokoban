@@ -38,6 +38,7 @@
         "common.h": "c",
         "level.h": "c",
         "stb_leakcheck.h": "c",
-        "toml.h": "c"
+        "toml.h": "c",
+        "game.h": "c"
     }
 }
