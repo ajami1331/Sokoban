@@ -19,13 +19,13 @@ FROM busybox:latest
 
 WORKDIR /root
 
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.data dist/sokoban.data
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html dist/index.html
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js dist/sokoban.js
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm dist/sokoban.wasm
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.data app/releases/sokoban.data
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html app/releases/index.html
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js app/releases/sokoban.js
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm app/releases/sokoban.wasm
 
 RUN ls dist
 
-RUN touch dist/httpd.conf
+RUN touch app/releases/httpd.conf
 
-CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-h", "dist", "-c", "httpd.conf"]
+CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-h", "app/releases", "-c", "httpd.conf"]

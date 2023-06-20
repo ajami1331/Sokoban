@@ -38,9 +38,6 @@ jobs:
         mv $(Build.ArtifactStagingDirectory)/releases/x86_64-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-x86_64-windows.zip 
         mv $(Build.ArtifactStagingDirectory)/releases/i686-windows.zip $(Build.ArtifactStagingDirectory)/releases/raylib-i686-windows.zip 
 
-  - upload: $(Build.ArtifactStagingDirectory)/raylib_c
-    artifact: raylib_c
-
   - upload: $(Build.ArtifactStagingDirectory)/releases
     artifact: releases
   

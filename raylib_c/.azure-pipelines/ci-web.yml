@@ -52,5 +52,16 @@ jobs:
       Contents: 'docker-compose.yml'
       TargetFolder: $(Build.ArtifactStagingDirectory)/raylib_c
 
+  - task: Bash@3
+    displayName: "Get html from docker container"
+    inputs:
+      targetType: 'inline'
+      script: |
+        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-raylib-c $(Build.ArtifactStagingDirectory)/
+        ls $(Build.ArtifactStagingDirectory)/releases/
+        
+  - upload: $(Build.ArtifactStagingDirectory)/releases
+    artifact: releases
+
   - upload: $(Build.ArtifactStagingDirectory)/raylib_c
     artifact: raylib_c
