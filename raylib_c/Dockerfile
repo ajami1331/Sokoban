@@ -24,8 +24,6 @@ COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html app/releas
 COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js app/releases/sokoban.js
 COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm app/releases/sokoban.wasm
 
-RUN ls dist
-
 RUN touch app/releases/httpd.conf
 
 CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-h", "app/releases", "-c", "httpd.conf"]
