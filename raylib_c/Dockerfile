@@ -17,13 +17,13 @@ RUN ls cmake-build-empscripten
 
 FROM busybox:latest
 
-WORKDIR /root
+WORKDIR /app
 
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.data app/releases/sokoban.data
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html app/releases/index.html
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js app/releases/sokoban.js
-COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm app/releases/sokoban.wasm
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.data releases/sokoban.data
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.html releases/index.html
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.js releases/sokoban.js
+COPY --from=builder /project/cmake-build-empscripten/bin/sokoban.wasm releases/sokoban.wasm
 
-RUN touch app/releases/httpd.conf
+RUN touch releases/httpd.conf
 
-CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-h", "app/releases", "-c", "httpd.conf"]
+CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-h", "releases", "-c", "httpd.conf"]
