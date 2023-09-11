@@ -4,6 +4,7 @@ const PRECACHE_ASSETS = [
     './index.html',
     './favicon.ico',
     './icon.png',
+    './icon620x620.png',
     './sokoban.js',
     './sokoban.wasm',
     './sokoban.data',
