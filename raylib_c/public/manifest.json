@@ -9,9 +9,16 @@
     "short_name": "Sokoban",
     "start_url": "/",
     "theme_color": "#ffffff",
-    "categories": [],
+    "categories": [
+        "games"
+    ],
     "screenshots": [],
     "icons": [
+        {
+            "src": "/icon620x620.png",
+            "type": "image/png",
+            "sizes": "620x620"
+        },
         {
             "src": "/icon.png",
             "type": "image/png",
