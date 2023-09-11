@@ -15,17 +15,17 @@
     "screenshots": [],
     "icons": [
         {
-            "src": "/icon620x620.png",
+            "src": "./icon620x620.png",
             "type": "image/png",
             "sizes": "620x620"
         },
         {
-            "src": "/icon.png",
+            "src": "./icon.png",
             "type": "image/png",
             "sizes": "100x100"
         },
         {
-            "src": "/favicon.ico",
+            "src": "./favicon.ico",
             "type": "image/x-icon"
         }
     ],
