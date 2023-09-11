@@ -1,0 +1,27 @@
+{
+    "background_color": "#ffffff",
+    "description": "Classic sokoban game",
+    "dir": "ltr",
+    "display": "standalone",
+    "name": "Sokoban: Puzzle Game",
+    "orientation": "any",
+    "scope": "/",
+    "short_name": "Sokoban",
+    "start_url": "/",
+    "theme_color": "#ffffff",
+    "categories": [],
+    "screenshots": [],
+    "icons": [
+        {
+            "src": "/icon.png",
+            "type": "image/png",
+            "sizes": "100x100"
+        },
+        {
+            "src": "/favicon.ico",
+            "type": "image/x-icon"
+        }
+    ],
+    "shortcuts": [],
+    "id": "me.aljami.game.sokoban"
+}
