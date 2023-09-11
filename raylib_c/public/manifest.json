@@ -5,9 +5,9 @@
     "display": "standalone",
     "name": "Sokoban: Puzzle Game",
     "orientation": "any",
-    "scope": "/",
+    "scope": "/sokoban/raylib/c/",
     "short_name": "Sokoban",
-    "start_url": "/",
+    "start_url": "/sokoban/raylib/c/",
     "theme_color": "#ffffff",
     "categories": [
         "games"
