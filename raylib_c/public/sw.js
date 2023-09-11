@@ -1,5 +1,5 @@
-var cacheName = 'me.aljami.game.sokoban-v1';
-var appShellFiles = [
+const CACHE_NAME = 'me.aljami.game.sokoban-v1';
+const PRECACHE_ASSETS = [
     './',
     './index.html',
     './favicon.ico',
@@ -9,18 +9,31 @@ var appShellFiles = [
     './sokoban.data',
 ];
 
-self.addEventListener('install', function (e) {
-    e.waitUntil(
-        caches.open(cacheName).then(function (cache) {
-            return cache.addAll(appShellFiles);
-        })
-    );
+self.addEventListener('install', event => {
+    event.waitUntil((async () => {
+        const cache = await caches.open(CACHE_NAME);
+        cache.addAll(PRECACHE_ASSETS);
+    })());
 });
 
-self.addEventListener('fetch', function (e) {
-    e.respondWith(
-        caches.match(e.request).then(function (r) {
-            return r || fetch(e.request);
-        })
-    );
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', event => {
+    event.respondWith(async () => {
+        const cache = await caches.open(CACHE_NAME);
+
+        // match the request to our cache
+        const cachedResponse = await cache.match(event.request);
+
+        // check if we got a valid response
+        if (cachedResponse !== undefined) {
+            // Cache hit, return the resource
+            return cachedResponse;
+        } else {
+            // Otherwise, go to the network
+            return fetch(event.request)
+        };
+    });
 });
