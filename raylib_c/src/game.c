@@ -1,3 +1,4 @@
+#include "audio.h"
 #include "game.h"
 #include "draw.h"
 #include "config.h"
@@ -45,6 +46,8 @@ void game_init(void)
     level_load_all();
 
     InitWindow(conf->screen_width, conf->screen_height, "Sokoban");
+
+    audio_init();
 
     SetTargetFPS(60);
 
@@ -138,7 +141,7 @@ void game_draw_current_level(void)
     level *l = g->current_level;
 
     int y_Offset = (config_load()->screen_height - (l->height * 64) / 2) / 64;
-    int x_Offset = (config_load()->screen_width - (l->width * 64) / 2)/ 64;
+    int x_Offset = (config_load()->screen_width - (l->width * 64) / 2) / 64;
 
     for (int i = 0; i < l->height; i++)
     {
@@ -163,7 +166,7 @@ game *game_get_instance(void)
             TraceLog(LOG_ERROR, "cannot allocate memory for game");
             exit(-1);
         }
-        
+
         g->level_text = (char *)malloc(32);
         if (!g->level_text)
         {
@@ -226,6 +229,8 @@ void game_cleanup(void)
     free(g);
 
     draw_free();
+
+    audio_destroy();
 
     CloseWindow();
 
@@ -424,6 +429,7 @@ void game_check_input_for_pause_menu(void)
 
     if (IsKeyPressed(KEY_UP))
     {
+        audio_play_menu_item_switch_sound();
         if (current_pause_menu_item == 0)
         {
             current_pause_menu_item = PAUSE_MENU_ITEMS_COUNT - 1;
@@ -435,6 +441,7 @@ void game_check_input_for_pause_menu(void)
 
     if (IsKeyPressed(KEY_DOWN))
     {
+        audio_play_menu_item_switch_sound();
         if (current_pause_menu_item == PAUSE_MENU_ITEMS_COUNT - 1)
         {
             current_pause_menu_item = 0;
@@ -446,6 +453,7 @@ void game_check_input_for_pause_menu(void)
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        audio_play_menu_item_switch_sound();
         switch (current_pause_menu_item)
         {
         case 0:
@@ -476,7 +484,6 @@ void game_check_input_for_pause_menu(void)
             break;
         }
     }
-
 }
 
 void game_restart_current_level(void)

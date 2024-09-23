@@ -39,6 +39,7 @@
         "level.h": "c",
         "stb_leakcheck.h": "c",
         "toml.h": "c",
-        "game.h": "c"
+        "game.h": "c",
+        "audio.h": "c"
     }
 }

@@ -1,12 +1,13 @@
+#include "audio.h"
 #include "menu.h"
 #include "game.h"
 #include "config.h"
 #include <stdlib.h>
 
 #if defined(PLATFORM_WEB)
-    #define MAIN_MENU_ITEMS_COUNT 3
+#define MAIN_MENU_ITEMS_COUNT 3
 #else
-    #define MAIN_MENU_ITEMS_COUNT 4
+#define MAIN_MENU_ITEMS_COUNT 4
 #endif
 
 char *main_menu_items[MAIN_MENU_ITEMS_COUNT] = {
@@ -50,10 +51,10 @@ void menu_process_main_menu(void)
     case MENU_STATE_EXIT:
         exit(0);
         break;
-    
+
     default:
         break;
-    }    
+    }
 }
 
 void process_main_menu(void)
@@ -86,6 +87,7 @@ void check_input_in_main_menu(void)
 {
     if (IsKeyPressed(KEY_UP))
     {
+        audio_play_menu_item_switch_sound();
         if (current_menu_item == 0)
         {
             current_menu_item = MAIN_MENU_ITEMS_COUNT - 1;
@@ -97,6 +99,7 @@ void check_input_in_main_menu(void)
 
     if (IsKeyPressed(KEY_DOWN))
     {
+        audio_play_menu_item_switch_sound();
         if (current_menu_item == MAIN_MENU_ITEMS_COUNT - 1)
         {
             current_menu_item = 0;
@@ -108,6 +111,7 @@ void check_input_in_main_menu(void)
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        audio_play_menu_item_switch_sound();
         switch (current_menu_item)
         {
         case 0:
@@ -123,7 +127,7 @@ void check_input_in_main_menu(void)
         case 3:
             menu = MENU_STATE_EXIT;
             break;
-        
+
         default:
             break;
         }
@@ -131,16 +135,16 @@ void check_input_in_main_menu(void)
 }
 
 void process_credits(void)
-{    
+{
     int width = config_load()->screen_width;
 
     ClearBackground(SKYBLUE);
-    
+
     DrawText("Credits", width / 3.5, 150, 76, WHITE);
-    
+
     DrawText("Created by: ", width / 3.5, 250, 48, WHITE);
     DrawText("Araf Al Jami", width / 3.5, 300, 48, WHITE);
-    
+
     DrawText("Assets from kenney.nl", width / 3.5, 400, 48, WHITE);
 
     DrawText("Press ESC to go back", width / 3.5, 500, 36, GRAY);
@@ -159,7 +163,7 @@ void process_level_select(void)
 }
 
 void draw_level_select(void)
-{    
+{
     int width = config_load()->screen_width;
 
     int tile_size = 64;
@@ -168,7 +172,7 @@ void draw_level_select(void)
     int y_offset = 180;
     int max_levels = config_load()->max_levels;
 
-    if (current_level_number >= 50) 
+    if (current_level_number >= 50)
     {
         y_offset -= ((current_level_number - 50) / 10 + 1) * tile_size_with_padding;
     }
@@ -196,6 +200,7 @@ void check_input_in_level_select(void)
 {
     if (IsKeyPressed(KEY_ESCAPE))
     {
+        audio_play_menu_item_switch_sound();
         menu = MENU_STATE_MENU;
     }
 
@@ -203,6 +208,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_UP))
     {
+        audio_play_menu_item_switch_sound();
         if (current_level_number - 10 >= 0)
         {
             current_level_number -= 10;
@@ -212,6 +218,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_DOWN))
     {
+        audio_play_menu_item_switch_sound();
         if (current_level_number + 10 < max_levels)
         {
             current_level_number += 10;
@@ -221,6 +228,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_LEFT))
     {
+        audio_play_menu_item_switch_sound();
         if (current_level_number - 1 >= 0)
         {
             current_level_number--;
@@ -230,6 +238,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_RIGHT))
     {
+        audio_play_menu_item_switch_sound();
         if (current_level_number + 1 < max_levels)
         {
             current_level_number++;
@@ -239,6 +248,7 @@ void check_input_in_level_select(void)
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        audio_play_menu_item_switch_sound();
         menu_reset_state();
         game_get_instance()->state = GAME_STATE_PLAYING;
         game_get_instance()->current_level_number = current_level_number;
