@@ -1,4 +1,4 @@
-trigger: 
+trigger:
   batch: true
   branches:
     include:
@@ -6,62 +6,53 @@ trigger:
   paths:
     include:
       - raylib_c
-
 pr: none
-
 pool:
   vmImage: ubuntu-latest
-
 jobs:
-- job: Build
-  steps:
-  - task: Docker@2
-    displayName: "Build docker for web"
-    inputs:
-      containerRegistry: 'ajami1331.azurecr.io'
-      repository: 'game.aljami.me-sokoban-raylib-c'
-      command: 'buildAndPush'
-      Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
-      tags: |
-        $(Build.BuildId)
-        latest
-
-  - task: Bash@3 
-    displayName: "Creating build staging directory structure"
-    inputs:
-      targetType: 'inline'
-      script: |
-        ls $(System.DefaultWorkingDirectory)
-        ls $(Build.StagingDirectory)
-        mkdir -p $(Build.StagingDirectory)/raylib_c/
-
-  - task: DockerCompose@0
-    inputs:
-      containerregistrytype: 'Azure Container Registry'
-      azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
-      azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
-      dockerComposeFile: '$(System.DefaultWorkingDirectory)/raylib_c/docker-compose.yml'
-      projectName: 
-      action: 'Lock services'
-      outputDockerComposeFile: '$(Build.StagingDirectory)/raylib_c/docker-compose.yml'
-  
-  - task: CopyFiles@2
-    displayName: 'Copy Files to artifact staging directory'
-    inputs:
-      SourceFolder: '$(Build.StagingDirectory)/raylib_c'
-      Contents: 'docker-compose.yml'
-      TargetFolder: $(Build.ArtifactStagingDirectory)/raylib_c
-
-  - task: Bash@3
-    displayName: "Get html from docker container"
-    inputs:
-      targetType: 'inline'
-      script: |
-        $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-raylib-c $(Build.ArtifactStagingDirectory)/
-        ls $(Build.ArtifactStagingDirectory)/releases/
-        
-  - upload: $(Build.ArtifactStagingDirectory)/releases
-    artifact: releases
-
-  - upload: $(Build.ArtifactStagingDirectory)/raylib_c
-    artifact: raylib_c
+  - job: Build
+    steps:
+      - task: Docker@2
+        displayName: "Build docker for web"
+        inputs:
+          containerRegistry: 'ajami1331.azurecr.io'
+          repository: 'game.aljami.me-sokoban-raylib-c'
+          command: 'buildAndPush'
+          Dockerfile: '$(System.DefaultWorkingDirectory)/raylib_c/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
+      - task: Bash@3
+        displayName: "Creating build staging directory structure"
+        inputs:
+          targetType: 'inline'
+          script: |
+            ls $(System.DefaultWorkingDirectory)
+            ls $(Build.StagingDirectory)
+            mkdir -p $(Build.StagingDirectory)/raylib_c/
+      - task: DockerCompose@0
+        inputs:
+          containerregistrytype: 'Azure Container Registry'
+          azureSubscription: 'Visual Studio Enterprise Subscription(fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0)'
+          azureContainerRegistry: '{"loginServer":"ajami1331.azurecr.io", "id" : "/subscriptions/fd24d692-fa14-4ae1-bc9c-b6bd3c64d6d0/resourceGroups/araf-build-agents/providers/Microsoft.ContainerRegistry/registries/ajami1331"}'
+          dockerComposeFile: '$(System.DefaultWorkingDirectory)/raylib_c/docker-compose.yml'
+          projectName:
+          action: 'Lock services'
+          outputDockerComposeFile: '$(Build.StagingDirectory)/raylib_c/docker-compose.yml'
+      - task: CopyFiles@2
+        displayName: 'Copy Files to artifact staging directory'
+        inputs:
+          SourceFolder: '$(Build.StagingDirectory)/raylib_c'
+          Contents: 'docker-compose.yml'
+          TargetFolder: $(Build.ArtifactStagingDirectory)/raylib_c
+      - task: Bash@3
+        displayName: "Get html from docker container"
+        inputs:
+          targetType: 'inline'
+          script: |
+            $(System.DefaultWorkingDirectory)/raylib_c/scripts/get-package-from-docker-container.sh ajami1331.azurecr.io/game.aljami.me-sokoban-raylib-c $(Build.ArtifactStagingDirectory)/
+            ls $(Build.ArtifactStagingDirectory)/releases/
+      - upload: $(Build.ArtifactStagingDirectory)/releases
+        artifact: releases
+      - upload: $(Build.ArtifactStagingDirectory)/raylib_c
+        artifact: raylib_c
