@@ -1,10 +1,10 @@
 name: Sokoban - raylib -c - Web
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'raylib_c/**'
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'raylib_c/**'
 jobs:
   web:
     runs-on: ubuntu-latest
