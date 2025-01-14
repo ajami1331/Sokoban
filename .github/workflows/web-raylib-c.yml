@@ -20,3 +20,9 @@ jobs:
       - run: |
           ./raylib_c/scripts/get-package-from-docker-container.sh raylib-c-web:latest ./releases/
           ls ./releases/
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./releases
+          destination_dir: sokoban-raylib-c
