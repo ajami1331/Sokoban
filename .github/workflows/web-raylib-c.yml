@@ -1,7 +1,7 @@
 name: Sokoban - raylib -c - Web
 on:
   push:
-    branches: 
+    branches:
       - main
     paths:
       - 'raylib_c/**'
@@ -10,21 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install emscripten
-        uses: docker://emscripten/emsdk:2.0.31
+      - name: Docker build
+        uses: docker/build-push-action@v2
         with:
-          args: |
-            emsdk install latest
-            emsdk activate latest
-            source emsdk_env.sh
-      - name: Build
-        run: |
-          emcmake cmake -S . -B cmake-build-empscripten -G Ninja -DPLATFORM=Web -DCMAKE_BUILD_TYPE=Release
-          cmake --build cmake-build-empscripten --config Release
-          ls -l cmake-build-empscripten
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./cmake-build-empscripten
-          publish_branch: gh-pages
+          context: ./raylib_c
+          file: ./raylib_c/Dockerfile
+          push: false
+          tags: raylib-c-web:latest
+      - run: |
+          ./raylib_c/get-package-from-docker-container.sh raylib-c-web:latest ./releases/
+          ls ./releases/
