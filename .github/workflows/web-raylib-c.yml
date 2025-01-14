@@ -18,5 +18,5 @@ jobs:
           push: false
           tags: raylib-c-web:latest
       - run: |
-          ./raylib_c/get-package-from-docker-container.sh raylib-c-web:latest ./releases/
+          ./raylib_c/scripts/get-package-from-docker-container.sh raylib-c-web:latest ./releases/
           ls ./releases/
