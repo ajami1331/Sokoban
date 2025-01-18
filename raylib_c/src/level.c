@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int LEVELS_LOADED = 0;
 
 void level_free_all(void);
@@ -58,7 +57,7 @@ level *level_load_all(void)
     line = malloc(sizeof(char) * MAX_LEVEL_WIDTH);
     size_t len = 0;
     LEVELS_LOADED = 0;
-    while (fgets(line, MAX_LEVEL_WIDTH, fp) != NULL)
+    while (fgets(line, MAX_LEVEL_WIDTH, fp) != NULL && LEVELS_LOADED < config_load()->max_levels + 1)
     {
         TraceLog(LOG_DEBUG, "Reading level %d", LEVELS_LOADED);
         len = strlen(line);

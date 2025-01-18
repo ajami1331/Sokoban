@@ -4,4 +4,4 @@ height=600
 
 [game]
 levels_file="./assets/levels"
-max_levels=90
+max_levels=40

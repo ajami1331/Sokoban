@@ -28,6 +28,7 @@ void process_credits(void);
 void process_level_select(void);
 void draw_level_select(void);
 void check_input_in_level_select(void);
+int level_from_mouse_input(void);
 
 void menu_reset_state(void)
 {
@@ -164,9 +165,16 @@ void process_credits(void)
 
     DrawText("Assets from kenney.nl", width / 3.5, 400, 48, WHITE);
 
-    DrawText("Press ESC to go back", width / 3.5, 500, 36, GRAY);
+    Vector2 cursor_position = GetMousePosition();
 
-    if (IsKeyPressed(KEY_ESCAPE))
+    bool is_mouse_over =
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 252 && cursor_position.y >= 500 && cursor_position.y <= 550) ||
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 278 && cursor_position.y >= 550 && cursor_position.y <= 600);
+
+    DrawText("Press ESC or", width / 3.5, 500, 36, is_mouse_over ? ORANGE : GRAY);
+    DrawText("click to go back", width / 3.5, 550, 36, is_mouse_over ? ORANGE : GRAY);
+
+    if (IsKeyPressed(KEY_ESCAPE) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && is_mouse_over))
     {
         menu = MENU_STATE_MENU;
     }
@@ -186,7 +194,7 @@ void draw_level_select(void)
     int tile_size = 64;
     int tile_size_with_padding = tile_size + 8 + 8;
     int per_row = width / tile_size_with_padding;
-    int y_offset = 180;
+    int y_offset = 220;
     int max_levels = config_load()->max_levels;
 
     if (current_level_number >= 50)
@@ -209,19 +217,44 @@ void draw_level_select(void)
         DrawText(TextFormat("%i", i + 1), 8 + x + 8, y_offset + y + 8, 48, BLACK);
     }
 
-    DrawText("Level Select", width / 3.5, 50, 36, GRAY);
-    DrawText("Press ESC to go back", width / 3.5, 100, 36, GRAY);
+    DrawRectangle(width / 3.5 - 25, 30, 320, 170, SKYBLUE);
+
+    DrawText("Level Select", width / 3.5, 50, 42, WHITE);
+
+    Vector2 cursor_position = GetMousePosition();
+
+    bool is_mouse_over =
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 252 && cursor_position.y >= 100 && cursor_position.y <= 150) ||
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 278 && cursor_position.y >= 150 && cursor_position.y <= 190);
+
+    DrawText("Press ESC or", width / 3.5, 100, 36, is_mouse_over ? ORANGE : GRAY);
+    DrawText("click to go back", width / 3.5, 150, 36, is_mouse_over ? ORANGE : GRAY);
 }
 
 void check_input_in_level_select(void)
 {
-    if (IsKeyPressed(KEY_ESCAPE))
+    Vector2 cursor_position = GetMousePosition();
+    int width = config_load()->screen_width;
+
+    bool is_mouse_over_esc =
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 252 && cursor_position.y >= 100 && cursor_position.y <= 150) ||
+        (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 278 && cursor_position.y >= 150 && cursor_position.y <= 190);
+
+    if (IsKeyPressed(KEY_ESCAPE) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && is_mouse_over_esc))
     {
         audio_play_menu_item_switch_sound();
         menu = MENU_STATE_MENU;
     }
 
     int max_levels = config_load()->max_levels;
+
+    int level_from_mouse = level_from_mouse_input();
+
+    if (level_from_mouse != -1 && level_from_mouse != current_level_number)
+    {
+        audio_play_menu_item_switch_sound();
+        current_level_number = level_from_mouse;
+    }
 
     if (IsKeyPressed(KEY_UP))
     {
@@ -263,7 +296,7 @@ void check_input_in_level_select(void)
         return;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+    if (IsKeyPressed(KEY_ENTER) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && level_from_mouse != -1))
     {
         audio_play_menu_item_switch_sound();
         menu_reset_state();
@@ -271,4 +304,35 @@ void check_input_in_level_select(void)
         game_get_instance()->current_level_number = current_level_number;
         game_restart_current_level();
     }
+}
+
+int level_from_mouse_input(void)
+{
+    int width = config_load()->screen_width;
+
+    int tile_size = 64;
+    int tile_size_with_padding = tile_size + 8 + 8;
+    int per_row = width / tile_size_with_padding;
+    int y_offset = 220;
+    int max_levels = config_load()->max_levels;
+
+    if (current_level_number >= 50)
+    {
+        y_offset -= ((current_level_number - 50) / 10 + 1) * tile_size_with_padding;
+    }
+
+    Vector2 cursor_position = GetMousePosition();
+
+    for (int i = 0; i < max_levels; i++)
+    {
+        int x = (i % per_row) * tile_size_with_padding;
+        int y = (i / per_row) * tile_size_with_padding;
+
+        if (cursor_position.x >= 8 + x && cursor_position.x <= 8 + x + tile_size && cursor_position.y >= y_offset + y && cursor_position.y <= y_offset + y + tile_size)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
