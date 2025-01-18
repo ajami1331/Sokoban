@@ -5,6 +5,6 @@
 - [Gameboy](https://github.com/ajami1331/Sokoban/tree/main/gameboy)
 - [SDL2](https://github.com/ajami1331/Sokoban/tree/main/sdl2)
 - [Raylib_C](https://github.com/ajami1331/Sokoban/tree/main/raylib_c)
-  - Play here, [https://game.aljami.me/sokoban/raylib/c](https://game.aljami.me/sokoban/raylib/c)
+  - Play here, [https://ajami1331.github.io/Sokoban/raylib-c/](https://ajami1331.github.io/Sokoban/raylib-c/)
 - [Common stuff](https://github.com/ajami1331/Sokoban/tree/main/common)
   - levels and assets used in all games
