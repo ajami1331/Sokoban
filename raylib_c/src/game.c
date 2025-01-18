@@ -27,6 +27,7 @@ void game_draw_level_complete_message(void);
 void game_check_input_for_level_complete(void);
 void game_draw_pause_menu(void);
 void game_check_input_for_pause_menu(void);
+void game_draw_and_check_menu_button(void);
 
 int current_pause_menu_item = 0;
 
@@ -192,6 +193,7 @@ void game_update_draw_frame(void)
     case GAME_STATE_PLAYING:
         game_update_current_level();
         game_draw_current_level();
+        game_draw_and_check_menu_button();
         game_check_for_level_complete();
         break;
     case GAME_STATE_LEVEL_COMPLETE:
@@ -421,10 +423,27 @@ void game_draw_pause_menu(void)
 
 void game_check_input_for_pause_menu(void)
 {
+
     if (IsKeyPressed(KEY_ESCAPE))
     {
         game *g = game_get_instance();
         g->state = GAME_STATE_PLAYING;
+    }
+
+    Vector2 cursor_position = GetMousePosition();
+    config *conf = config_load();
+
+    for (int i = 0; i < PAUSE_MENU_ITEMS_COUNT; i++)
+    {
+        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200)
+        {
+            if (current_pause_menu_item == i)
+            {
+                break;
+            }
+            audio_play_menu_item_switch_sound();
+            current_pause_menu_item = i;
+        }
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -451,7 +470,8 @@ void game_check_input_for_pause_menu(void)
         return;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+    if (IsKeyPressed(KEY_ENTER) ||
+        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200))
     {
         audio_play_menu_item_switch_sound();
         switch (current_pause_menu_item)
@@ -490,4 +510,22 @@ void game_restart_current_level(void)
 {
     game_load_current_level();
     TraceLog(LOG_INFO, "reloading level %d", game_get_instance()->current_level_number);
+}
+
+void game_draw_and_check_menu_button(void)
+{
+    Vector2 cursor_position = GetMousePosition();
+
+    if (cursor_position.x >= 10 && cursor_position.x <= 10 + 50 && cursor_position.y >= 10 && cursor_position.y <= 10 + 50)
+    {
+        DrawText("Menu", 10, 10, 20, ORANGE);
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            game_get_instance()->state = GAME_STATE_PAUSED;
+        }
+    }
+    else
+    {
+        DrawText("Menu", 10, 10, 20, WHITE);
+    }
 }

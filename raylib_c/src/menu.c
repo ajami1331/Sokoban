@@ -85,6 +85,22 @@ void draw_main_menu(void)
 
 void check_input_in_main_menu(void)
 {
+    Vector2 cursor_position = GetMousePosition();
+    config *conf = config_load();
+
+    for (int i = 0; i < MAIN_MENU_ITEMS_COUNT; i++)
+    {
+        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200)
+        {
+            if (current_menu_item == i)
+            {
+                break;
+            }
+            audio_play_menu_item_switch_sound();
+            current_menu_item = i;
+        }
+    }
+
     if (IsKeyPressed(KEY_UP))
     {
         audio_play_menu_item_switch_sound();
@@ -109,7 +125,8 @@ void check_input_in_main_menu(void)
         return;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+    if (IsKeyPressed(KEY_ENTER) ||
+        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200))
     {
         audio_play_menu_item_switch_sound();
         switch (current_menu_item)
