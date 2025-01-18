@@ -1,0 +1,54 @@
+{
+  :workflow {
+    :recent-files [
+      [
+        "/main/gameobjects/crate.go"
+        :scene
+      ]
+      [
+        "/input/game.input_binding"
+        :cljfx-form-view
+      ]
+      [
+        "/.azure-pipelines/ci.yml"
+        :code
+      ]
+      [
+        "/main/scripts/game.script"
+        :code
+      ]
+      [
+        "/main/gui/menu.gui"
+        :scene
+      ]
+      [
+        "/main/gui/game.gui"
+        :scene
+      ]
+      [
+        "/main/scripts/controller.script"
+        :code
+      ]
+      [
+        "/assets/levels/level_base.tilemap"
+        :scene
+      ]
+      [
+        "/assets/levels/level_tiles.tilesource"
+        :scene
+      ]
+      [
+        "/main/collections/game.collection"
+        :scene
+      ]
+      [
+        "/main/collections/main.collection"
+        :scene
+      ]
+      [
+        "/main/collections/splash.collection"
+        :scene
+      ]
+    ]
+  }
+}
