@@ -30,6 +30,8 @@ void game_check_input_for_pause_menu(void);
 void game_draw_and_check_menu_button(void);
 
 int current_pause_menu_item = 0;
+int current_gesture = -1;
+int last_gesture = -1;
 
 char *pause_menu_items[PAUSE_MENU_ITEMS_COUNT] = {
     "Resume",
@@ -245,6 +247,31 @@ void game_update_current_level(void)
     level *l = g->current_level;
     int prev_player_x = g->player_x;
     int prev_player_y = g->player_y;
+    current_gesture = GetGestureDetected();
+    if (current_gesture != last_gesture)
+    {
+        Vector2 touchPosition = GetTouchPosition(0);
+        if (current_gesture == GESTURE_TAP)
+        {
+            if (touchPosition.x > config_load()->screen_width / 2 + 100)
+            {
+                g->player_y++;
+            }
+            else if (touchPosition.x < config_load()->screen_width / 2 - 100)
+            {
+                g->player_y--;
+            }
+            else if (touchPosition.y < config_load()->screen_height / 2)
+            {
+                g->player_x--;
+            }
+            else
+            {
+                g->player_x++;
+            }
+        }
+        last_gesture = current_gesture;
+    }
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
