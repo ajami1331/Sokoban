@@ -44,11 +44,9 @@ void game_init(void)
 {
     TraceLog(LOG_INFO, "initializing game");
 
-    config *conf = config_load();
-
     level_load_all();
 
-    InitWindow(conf->screen_width, conf->screen_height, "Sokoban");
+    InitWindow(config_load()->screen_width, config_load()->screen_height, "Sokoban");
 
     audio_init();
 
@@ -138,13 +136,13 @@ void game_draw_current_level(void)
 
     snprintf(g->level_text, 32, "Level: %d", g->current_level_number + 1);
 
-    DrawText("Sokoban", config_load()->screen_width - 100, 10, 20, WHITE);
-    DrawText(g->level_text, config_load()->screen_width - 100, 30, 20, WHITE);
+    DrawText("Sokoban", GetScreenWidth() - 100, 10, 20, WHITE);
+    DrawText(g->level_text, GetScreenWidth() - 100, 30, 20, WHITE);
 
     level *l = g->current_level;
 
-    int y_Offset = (config_load()->screen_height - (l->height * 64) / 2) / 64;
-    int x_Offset = (config_load()->screen_width - (l->width * 64) / 2) / 64;
+    int y_Offset = (GetScreenHeight() - (l->height * 64) / 2) / 64;
+    int x_Offset = (GetScreenWidth() - (l->width * 64) / 2) / 64;
 
     for (int i = 0; i < l->height; i++)
     {
@@ -253,15 +251,15 @@ void game_update_current_level(void)
         Vector2 touchPosition = GetTouchPosition(0);
         if (current_gesture == GESTURE_TAP)
         {
-            if (touchPosition.x > config_load()->screen_width / 2 + 100)
+            if (touchPosition.x > GetScreenWidth() / 2 + 100)
             {
                 g->player_y++;
             }
-            else if (touchPosition.x < config_load()->screen_width / 2 - 100)
+            else if (touchPosition.x < GetScreenWidth() / 2 - 100)
             {
                 g->player_y--;
             }
-            else if (touchPosition.y < config_load()->screen_height / 2)
+            else if (touchPosition.y < GetScreenHeight() / 2)
             {
                 g->player_x--;
             }
@@ -431,7 +429,7 @@ void game_check_input_for_level_complete(void)
 
 void game_draw_pause_menu(void)
 {
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     ClearBackground(SKYBLUE);
 
@@ -458,11 +456,10 @@ void game_check_input_for_pause_menu(void)
     }
 
     Vector2 cursor_position = GetMousePosition();
-    config *conf = config_load();
 
     for (int i = 0; i < PAUSE_MENU_ITEMS_COUNT; i++)
     {
-        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200)
+        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= GetScreenWidth() / 2.5 && cursor_position.x <= GetScreenWidth() / 2.5 + 200)
         {
             if (current_pause_menu_item == i)
             {
@@ -498,7 +495,7 @@ void game_check_input_for_pause_menu(void)
     }
 
     if (IsKeyPressed(KEY_ENTER) ||
-        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200))
+        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= GetScreenWidth() / 2.5 && cursor_position.x <= GetScreenWidth() / 2.5 + 200))
     {
         audio_play_menu_item_switch_sound();
         switch (current_pause_menu_item)

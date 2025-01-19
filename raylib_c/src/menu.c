@@ -67,7 +67,7 @@ void process_main_menu(void)
 
 void draw_main_menu(void)
 {
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     ClearBackground(SKYBLUE);
 
@@ -87,11 +87,10 @@ void draw_main_menu(void)
 void check_input_in_main_menu(void)
 {
     Vector2 cursor_position = GetMousePosition();
-    config *conf = config_load();
 
     for (int i = 0; i < MAIN_MENU_ITEMS_COUNT; i++)
     {
-        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200)
+        if (cursor_position.y >= 250 + (i * 50) && cursor_position.y <= 250 + (i * 50) + 50 && cursor_position.x >= GetScreenWidth() / 2.5 && cursor_position.x <= GetScreenWidth() / 2.5 + 200)
         {
             if (current_menu_item == i)
             {
@@ -127,7 +126,7 @@ void check_input_in_main_menu(void)
     }
 
     if (IsKeyPressed(KEY_ENTER) ||
-        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= conf->screen_width / 2.5 && cursor_position.x <= conf->screen_width / 2.5 + 200))
+        (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cursor_position.x >= GetScreenWidth() / 2.5 && cursor_position.x <= GetScreenWidth() / 2.5 + 200))
     {
         audio_play_menu_item_switch_sound();
         switch (current_menu_item)
@@ -154,7 +153,7 @@ void check_input_in_main_menu(void)
 
 void process_credits(void)
 {
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     ClearBackground(SKYBLUE);
 
@@ -189,7 +188,7 @@ void process_level_select(void)
 
 void draw_level_select(void)
 {
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     int tile_size = 64;
     int tile_size_with_padding = tile_size + 8 + 8;
@@ -234,7 +233,7 @@ void draw_level_select(void)
 void check_input_in_level_select(void)
 {
     Vector2 cursor_position = GetMousePosition();
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     bool is_mouse_over_esc =
         (cursor_position.x >= width / 3.5 && cursor_position.x <= width / 3.5 + 252 && cursor_position.y >= 100 && cursor_position.y <= 150) ||
@@ -308,7 +307,7 @@ void check_input_in_level_select(void)
 
 int level_from_mouse_input(void)
 {
-    int width = config_load()->screen_width;
+    int width = GetScreenWidth();
 
     int tile_size = 64;
     int tile_size_with_padding = tile_size + 8 + 8;
