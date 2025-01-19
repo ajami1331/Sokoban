@@ -4,3 +4,4 @@ cmake-build-empscripten
 releases
 out
 .vs
+build-web
